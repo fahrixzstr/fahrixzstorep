@@ -1,0 +1,56 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, HelpCircle } from 'lucide-react';
+
+const faqs = [
+  { q: 'Bagaimana cara membeli produk?', a: 'Pilih produk yang Anda inginkan, tambahkan ke keranjang, lalu lakukan checkout dan pembayaran menggunakan metode pembayaran yang tersedia.' },
+  { q: 'Bagaimana saya menerima produk yang dibeli?', a: 'Setelah pembayaran berhasil, Anda akan menerima email konfirmasi dengan link download. Produk juga tersedia di halaman Library Anda.' },
+  { q: 'Berapa lama link download aktif?', a: 'Link download aktif selama 7 hari setelah pembelian. Anda dapat mendownload produk hingga batas yang ditentukan.' },
+  { q: 'Apakah ada garansi?', a: 'Ya, kami menyediakan garansi uang kembali 7 hari jika produk tidak sesuai deskripsi.' },
+  { q: 'Metode pembayaran apa saja yang diterima?', a: 'Kami menerima Transfer Bank, E-Wallet (OVO, GoPay, DANA), QRIS, dan Kartu Kredit.' },
+  { q: 'Bisakah saya membeli sebagai hadiah?', a: 'Ya, saat checkout Anda dapat mengaktifkan opsi Beli sebagai Hadiah dan masukkan email penerima.' },
+  { q: 'Apakah produk bisa di-refund?', a: 'Ya, Anda dapat mengajukan refund dalam 7 hari dengan alasan yang valid melalui halaman Support.' },
+  { q: 'Bagaimana cara menghubungi support?', a: 'Anda dapat menghubungi kami via email fahrixzstore@gmail.com atau WhatsApp 085609949819.' },
+];
+
+export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  return (
+    <div className="min-h-screen px-4 py-8 max-w-3xl mx-auto">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <div className="text-center mb-8">
+          <HelpCircle className="w-12 h-12 text-purple-500 mx-auto mb-3" />
+          <h1 className="text-3xl font-bold mb-2">Pertanyaan Umum (FAQ)</h1>
+          <p className="text-muted-foreground">Temukan jawaban untuk pertanyaan umum di sini.</p>
+        </div>
+
+        <div className="space-y-3">
+          {faqs.map((faq, i) => (
+            <div key={i} className="bg-card border border-border rounded-xl overflow-hidden">
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full flex items-center justify-between p-4 text-left hover:bg-muted/50 transition-colors"
+              >
+                <span className="font-medium text-sm pr-4">{faq.q}</span>
+                <ChevronDown className={`w-4 h-4 flex-shrink-0 transition-transform ${openIndex === i ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {openIndex === i && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="px-4 pb-4 text-sm text-muted-foreground">{faq.a}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}

@@ -1,0 +1,225 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingCart, Sun, Moon, User, LogOut, Package, Bell, Heart, Search, Menu, X, Shield } from 'lucide-react';
+import useStore from '@/stores/useStore';
+import authService from '@/services/auth';
+import { toast } from 'sonner';
+
+export default function Navbar() {
+  const navigate = useNavigate();
+  const { user, isLoggedIn, isAdmin, theme, toggleTheme, getCartCount, unreadCount, incrementAdminClick, resetAdminClicks, lastAdminClick } = useStore();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [logoClicks, setLogoClicks] = useState(0);
+
+  // Admin secret login (5 clicks on logo)
+  const handleLogoClick = () => {
+    const now = Date.now();
+    if (now - (lastAdminClick || 0) > 2000) {
+      resetAdminClicks();
+      setLogoClicks(1);
+    } else {
+      const newCount = logoClicks + 1;
+      setLogoClicks(newCount);
+      incrementAdminClick();
+
+      if (newCount >= 5) {
+        navigate('/admin');
+        resetAdminClicks();
+        setLogoClicks(0);
+        toast.success('Admin panel accessed');
+      }
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      useStore.getState().logout();
+      toast.success('Logout berhasil');
+      navigate('/');
+    } catch {
+      toast.error('Logout gagal');
+    }
+  };
+
+  return (
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16 gap-4">
+          {/* Logo */}
+          <Link to="/" onClick={handleLogoClick} className="flex items-center gap-2 flex-shrink-0">
+  <img src="/logo.svg" alt="FahriXz Store" className="w-8 h-8 rounded-lg object-contain" />
+  <span className="font-bold text-lg hidden sm:block">FahriXz Store</span>
+</Link>
+
+          {/* Search */}
+          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari produk digital..."
+                className="w-full pl-10 pr-4 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+              />
+            </div>
+          </form>
+
+          {/* Actions */}
+          <div className="flex items-center gap-1">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 hover:bg-muted rounded-lg transition-colors"
+              title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
+            {/* Wishlist */}
+            <Link
+              to="/products"
+              className="p-2 hover:bg-muted rounded-lg transition-colors hidden sm:flex"
+            >
+              <Heart className="w-4 h-4" />
+            </Link>
+
+            {/* Notifications */}
+            <button className="p-2 hover:bg-muted rounded-lg transition-colors relative hidden sm:flex">
+              <Bell className="w-4 h-4" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+
+            {/* Cart */}
+            <Link
+              to="/cart"
+              className="p-2 hover:bg-muted rounded-lg transition-colors relative"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              {getCartCount() > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-purple-500 text-white text-[10px] rounded-full flex items-center justify-center">
+                  {getCartCount()}
+                </span>
+              )}
+            </Link>
+
+            {/* User */}
+            {isLoggedIn ? (
+              <div className="relative group">
+                <button className="flex items-center gap-2 p-1.5 hover:bg-muted rounded-lg transition-colors">
+                  <div className="w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                    {user?.photoURL ? (
+                      <img src={user.photoURL} alt="" className="w-7 h-7 rounded-full" />
+                    ) : (
+                      <User className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                    )}
+                  </div>
+                  <span className="text-sm hidden lg:block max-w-[100px] truncate">
+                    {user?.displayName || 'User'}
+                  </span>
+                </button>
+
+                {/* Dropdown */}
+                <div className="absolute right-0 top-full mt-1 w-48 bg-card border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                  <div className="p-2">
+                    <Link to="/dashboard" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-lg transition-colors">
+                      <User className="w-4 h-4" />
+                      Dashboard
+                    </Link>
+                    <Link to="/orders" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-lg transition-colors">
+                      <Package className="w-4 h-4" />
+                      Pesanan Saya
+                    </Link>
+                    <Link to="/settings" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-lg transition-colors">
+                      <User className="w-4 h-4" />
+                      Pengaturan
+                    </Link>
+                    {isAdmin && (
+                      <Link to="/admin" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-lg transition-colors text-purple-600">
+                        <Shield className="w-4 h-4" />
+                        Admin Panel
+                      </Link>
+                    )}
+                    <hr className="my-1 border-border" />
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/login"
+                  className="px-3 py-2 text-sm hover:bg-muted rounded-lg transition-colors"
+                >
+                  Masuk
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-3 py-2 text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                >
+                  Daftar
+                </Link>
+              </div>
+            )}
+
+            {/* Mobile Menu */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 hover:bg-muted rounded-lg transition-colors md:hidden"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-border bg-background px-4 py-4 space-y-2">
+          <form onSubmit={handleSearch} className="mb-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari produk..."
+                className="w-full pl-10 pr-4 py-2.5 bg-muted border border-border rounded-lg text-sm"
+              />
+            </div>
+          </form>
+          <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-purple-500">Beranda</Link>
+          <Link to="/products" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-purple-500">Produk</Link>
+          <Link to="/cart" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-purple-500">Keranjang</Link>
+          {isLoggedIn && (
+            <>
+              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-purple-500">Dashboard</Link>
+              <Link to="/orders" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-purple-500">Pesanan</Link>
+              <button onClick={handleLogout} className="block py-2 text-red-500">Logout</button>
+            </>
+          )}
+        </div>
+      )}
+    </nav>
+  );
+}

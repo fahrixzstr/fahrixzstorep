@@ -1,0 +1,52 @@
+import { motion } from 'framer-motion';
+import { Shield } from 'lucide-react';
+
+export default function Privacy() {
+  return (
+    <div className="min-h-screen px-4 py-8 max-w-3xl mx-auto">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <div className="flex items-center gap-3 mb-6">
+          <Shield className="w-8 h-8 text-purple-500" />
+          <h1 className="text-3xl font-bold">Kebijakan Privasi</h1>
+        </div>
+
+        <div className="prose prose-sm max-w-none text-muted-foreground space-y-4">
+          <section>
+            <h2 className="text-lg font-bold text-foreground">1. Informasi yang Kami Kumpulkan</h2>
+            <p>Kami mengumpulkan informasi yang Anda berikan saat mendaftar, melakukan pembelian, atau menghubungi kami. Ini meliputi nama, email, nomor telepon, dan informasi pembayaran.</p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-foreground">2. Penggunaan Informasi</h2>
+            <p>Informasi Anda digunakan untuk memproses pesanan, mengirim produk, memberikan support, dan meningkatkan layanan kami.</p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-foreground">3. Keamanan Data</h2>
+            <p>Kami menggunakan enkripsi SSL dan Firebase Security Rules untuk melindungi data Anda. Pembayaran diproses oleh Faspay yang bersertifikasi PCI DSS.</p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-foreground">4. Berbagi Informasi</h2>
+            <p>Kami tidak menjual atau menyewakan data pribadi Anda. Data hanya dibagikan dengan penyedia layanan yang diperlukan (Faspay untuk pembayaran, Firebase untuk database).</p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-foreground">5. Cookie</h2>
+            <p>Kami menggunakan cookie untuk menyimpan preferensi tema, data keranjang, dan sesi login. Anda dapat menonaktifkan cookie di pengaturan browser.</p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-foreground">6. Hak Anda</h2>
+            <p>Anda berhak mengakses, mengubah, atau menghapus data pribadi Anda. Hubungi kami di fahrixzstore@gmail.com untuk permintaan tersebut.</p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-foreground">7. Perubahan Kebijakan</h2>
+            <p>Kami dapat memperbarui kebijakan privasi ini sewaktu-waktu. Perubahan akan diinformasikan melalui website.</p>
+          </section>
+        </div>
+      </motion.div>
+    </div>
+  );
+}

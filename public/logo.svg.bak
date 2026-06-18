@@ -1,0 +1,67 @@
+<svg width="900" height="900" viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Background -->
+  <rect width="900" height="900" fill="#0A0714"/>
+
+  <!-- Softer premium glow (cleaned) -->
+  <circle cx="450" cy="450" r="320" fill="#7C3AED" opacity="0.14"/>
+  <circle cx="450" cy="450" r="220" fill="#A855F7" opacity="0.08"/>
+
+  <!-- Main container (slightly refined radius for modern feel) -->
+  <rect x="230" y="230" width="440" height="440" rx="140"
+        fill="#120A1F"/>
+
+  <!-- FZ core (kept EXACT idea, only refined spacing & thickness) -->
+  <path d="M340 340 H560
+           M340 450 H500
+           M340 340 V560
+           M500 450 V560"
+        stroke="#FFFFFF"
+        stroke-width="50"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Purple identity stroke (cleaned angle, less harsh) -->
+  <path d="M575 320 L430 570"
+        stroke="#A855F7"
+        stroke-width="42"
+        stroke-linecap="round"/>
+
+  <!-- Secondary accent (reduced noise, better hierarchy) -->
+  <path d="M520 320 L400 520"
+        stroke="#7C3AED"
+        stroke-width="14"
+        stroke-linecap="round"
+        opacity="0.7"/>
+
+  <!-- Ecosystem node (more subtle, less “game UI”) -->
+  <circle cx="575" cy="580" r="14" fill="#A855F7"/>
+  <circle cx="575" cy="580" r="5" fill="#FFFFFF"/>
+
+  <!-- Frame (thinner = more corporate) -->
+  <rect x="210" y="210" width="480" height="480" rx="150"
+        fill="none"
+        stroke="#A855F7"
+        stroke-opacity="0.08"
+        stroke-width="2"/>
+
+  <!-- Brand text -->
+  <text x="450" y="760" text-anchor="middle"
+        font-size="46"
+        font-family="Arial, sans-serif"
+        font-weight="700"
+        fill="#FFFFFF"
+        letter-spacing="6">
+    FAHRIXZ STORE
+  </text>
+
+  <!-- Descriptor -->
+  <text x="450" y="802" text-anchor="middle"
+        font-size="16"
+        font-family="Arial, sans-serif"
+        fill="#A1A1AA"
+        opacity="0.9">
+    Unifield Digital Platform
+  </text>
+
+</svg>

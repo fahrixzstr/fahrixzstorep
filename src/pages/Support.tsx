@@ -1,0 +1,86 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Headphones, Mail, MessageSquare, Ticket, Send } from 'lucide-react';
+import { toast } from 'sonner';
+import emailjs from '@emailjs/browser';
+
+export default function Support() {
+  const [form, setForm] = useState({ name: '', email: '', category: 'other', subject: '', message: '' });
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSending(true);
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_vbwh3ip',
+        import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID || 'template_k6066f7',
+        {
+          from_name: form.name,
+          from_email: form.email,
+          subject: `[${form.category}] ${form.subject}`,
+          message: form.message,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'g8pXvoSYyGzCMg0vo'
+      );
+      toast.success('Tiket support berhasil dibuat!');
+      setForm({ name: '', email: '', category: 'other', subject: '', message: '' });
+    } catch {
+      toast.error('Gagal membuat tiket');
+    } finally { setSending(false); }
+  };
+
+  return (
+    <div className="min-h-screen px-4 py-8 max-w-4xl mx-auto">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <div className="text-center mb-8">
+          <Headphones className="w-12 h-12 text-purple-500 mx-auto mb-3" />
+          <h1 className="text-3xl font-bold mb-2">Support Center</h1>
+          <p className="text-muted-foreground">Kami siap membantu Anda. Pilih metode kontak di bawah.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-4 mb-8">
+          {[
+            { icon: Mail, title: 'Email', desc: 'fahrixzstorr@gmail.com' },
+            { icon: MessageSquare, title: 'WhatsApp', desc: '085609949819' },
+            { icon: Ticket, title: 'Tiket Support', desc: 'Respons dalam 24 jam' },
+          ].map((item, i) => (
+            <div key={i} className="bg-card border border-border rounded-xl p-4 text-center">
+              <item.icon className="w-6 h-6 text-purple-500 mx-auto mb-2" />
+              <p className="font-medium">{item.title}</p>
+              <p className="text-sm text-muted-foreground">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="bg-card border border-border rounded-2xl p-6">
+          <h2 className="text-lg font-bold mb-4">Buat Tiket Support</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <input type="text" placeholder="Nama" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm" required />
+              <input type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm" required />
+            </div>
+            <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
+              className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm">
+              <option value="download">Masalah Download</option>
+              <option value="license">License Tidak Valid</option>
+              <option value="refund">Refund</option>
+              <option value="other">Lainnya</option>
+            </select>
+            <input type="text" placeholder="Subjek" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })}
+              className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm" required />
+            <textarea placeholder="Deskripsi masalah..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+              rows={4} className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm resize-none" required />
+            <button type="submit" disabled={sending}
+              className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white py-2.5 px-6 rounded-xl transition-colors">
+              <Send className="w-4 h-4" />
+              {sending ? 'Mengirim...' : 'Kirim Tiket'}
+            </button>
+          </form>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
