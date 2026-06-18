@@ -237,8 +237,8 @@ const useStore = create<AppState>()(
       // Site Config
       siteConfig: {
         siteName: 'FahriXz Store',
-        siteDescription: 'Marketplace Produk Digital Terpercaya',
-        contactEmail: 'fahriandriansaputraa@gmail.com',
+        siteDescription: 'Marketplace Produk Digital Terbaru di Indonesia.',
+        contactEmail: 'fahrixzstore@gmail.com',
         contactPhone: '085609949819',
         maintenanceMode: false,
         refundPolicyDays: 7,
