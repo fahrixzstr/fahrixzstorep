@@ -34,9 +34,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-3">
-          <Link to="/admin" className="flex items-center gap-2">
-            <img src="/logo.svg" alt="FahriXz Store" className="w-8 h-8 rounded-lg object-contain" />
-            <div>
+              <img src="/logo.svg" alt="FahriXz Store" className="w-8 h-8 rounded-lg object-contain" />
               <span className="font-bold text-sm">FahriXz Store</span>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">

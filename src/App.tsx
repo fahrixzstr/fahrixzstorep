@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import UserLayout from '@/components/layout/UserLayout';
 import AdminLayout from '@/components/layout/AdminLayout';
 import useStore from '@/stores/useStore';
@@ -171,6 +172,7 @@ export default function App() {
         </Routes>
       </Suspense>
       <Toaster position="top-right" richColors />
+      <Analytics />
     </AuthInitializer>
   );
 }
