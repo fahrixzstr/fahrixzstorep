@@ -45,7 +45,7 @@ export default function Contact() {
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {[
-            { icon: Mail, label: 'Email', value: 'fahriandriansaputraa@gmail.com' },
+            { icon: Mail, label: 'Email', value: 'fahrixzstore@gmail.com' },
             { icon: Phone, label: 'Telepon', value: '085609949819' },
             { icon: MapPin, label: 'Alamat', value: 'Kab. Tanggamus, Lampung' },
           ].map((item, i) => (
