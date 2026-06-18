@@ -16,7 +16,7 @@ export default function About() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold mb-4 text-center">Tentang FahriXz Store</h1>
         <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
-          FahriXz Store adalah marketplace produk digital terpercaya yang menyediakan software, template, e-book, dan berbagai produk digital berkualitas.
+          FahriXz Store adalah marketplace produk digital terpercaya yang menyediakan software, script dan berbagai produk digital berkualitas.
         </p>
 
         <div className="bg-card border border-border rounded-2xl p-6 mb-8">
